@@ -22,7 +22,7 @@ def part1():
     # If you hold the button down for all the time duration, you will travel 0
     # So travel[0] and travel[-1] == 0 for time = 0 or time = maxTime
     # if you hold for 1 millisecond the boat's speed would be equal to the time we held the button
-    # For T = 1, Speed = 1, total Distance = timeRemaining * speed => ( 7 - T ) * 1 => ( 7 - 1 ) * 6 => 6
+    # For T = 1, Speed = 1, total Distance = timeRemaining * speed => ( 7 - T ) * Speed => ( 7 - 1 ) * 1 => 6
     # For T = 2, Speed = 2, totalDistance = ( 7 - 2 ) * 2 => 10
     # Brute Forced
     # T: O( N * M ) where N is the length of times array and M is the total time
