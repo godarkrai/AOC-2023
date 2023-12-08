@@ -6,19 +6,11 @@ with open( 'Day8Input.txt' ) as f:
 
 instructions = input[ 0 ]
 
-startingNodes = []
-graph = {}
-for network in input[ 2: ]:
-    from_, to = network.split( ' = ' )
-    if from_.endswith( 'A' ):
-        startingNodes.append( from_ )
-    to = to.replace( ')', '' ).replace( '(', '' ).split( ', ' )
-    graph[ from_ ] = to
-
+graph = { from_:to.replace( ')', '' ).replace( '(', '' ).split( ', ' ) for from_, to in ( network.split( ' = ' ) for network in input[ 2: ] ) }
+startingNodes = [ from_ for network in input[ 2: ] if ( from_ := network.split( ' = ' )[ 0 ] ).endswith( 'A' ) ]
 
 def getSteps( startingNode = 'AAA' ):
-    q = deque()
-    q.append( ( startingNode, 0, instructions[ 0 ] ) )
+    q = deque( [ ( startingNode, 0, instructions[ 0 ] ) ] )
     index = 0
     while q:
         currentNode, totalSteps, currentInstruction = q.popleft()
