@@ -18,6 +18,58 @@ directions = {
 R = len( grid )
 C = len( grid[ 0 ] )
 
+def getNewDirection( q, newX, newY, currentDir ):
+    newPoint = ( newX, newY )
+    if currentDir == '>':
+        if grid[ newX ][ newY ] == '|':
+            # Split the beam into two,
+            q.append( ( newPoint, 'V' ) )
+            q.append( ( newPoint, '^' ) )
+        elif grid[ newX ][ newY ] == '/':
+            # No change, keep moving forward
+            q.append( ( newPoint, '^' ) )
+        elif grid[ newX ][ newY ] == '\\':
+            q.append( ( newPoint, 'V' ) )
+        else: # For '-', any beam, '.'
+            q.append( ( newPoint, '>' ) )
+    elif currentDir == '<':
+        if grid[ newX ][ newY ] == '|':
+            # Split the beam into two, 
+            q.append( ( newPoint, 'V' ) )
+            q.append( ( newPoint, '^' ) )
+        elif grid[ newX ][ newY ] == '/':
+            # No change, keep moving forward
+            q.append( ( newPoint, 'V' ) )
+        elif grid[ newX ][ newY ] == '\\':
+            q.append( ( newPoint, '^' ) )
+        else: # For '-', any beam, '.'
+            q.append( ( newPoint, '<' ) )
+    elif currentDir == 'V':
+        if grid[ newX ][ newY ] == '-':
+            # Split the beam into two
+            q.append( ( newPoint, '>' ) )
+            q.append( ( newPoint, '<' ) )
+        elif grid[ newX ][ newY ] == '/':
+            # No change, keep moving forward
+            q.append( ( newPoint, '<' ) )
+        elif grid[ newX ][ newY ] == '\\':
+            q.append( ( newPoint, '>' ) )
+        else: # For '|', AnyBeam, '.'
+            q.append( ( newPoint, 'V' ) )
+    else:
+        if grid[ newX ][ newY ] == '-':
+            # Split the beam into two
+            q.append( ( newPoint, '>' ) )
+            q.append( ( newPoint, '<' ) )
+        elif grid[ newX ][ newY ] == '/':
+            # No change, keep moving forward
+            q.append( ( newPoint, '>' ) )
+        elif grid[ newX ][ newY ] == '\\':
+            q.append( ( newPoint, '<' ) )
+        else: # For '|', AnyBeam, '.'
+            q.append( ( newPoint, '^' ) )
+    return q
+
 def validCell( x,y ):
     if 0 <= x < R and 0 <= y < C:
         return True
@@ -50,54 +102,7 @@ def part1():
             if ( newPoint, currentDir ) in visited:
                 continue
             visited.add( ( newPoint, currentDir ) )
-            if currentDir == '>':
-                if grid[ newX ][ newY ] == '|':
-                    # Split the beam into two, 
-                    q.append( ( newPoint, 'V' ) )
-                    q.append( ( newPoint, '^' ) )
-                elif grid[ newX ][ newY ] == '/':
-                    # No change, keep moving forward
-                    q.append( ( newPoint, '^' ) )
-                elif grid[ newX ][ newY ] == '\\':
-                    q.append( ( newPoint, 'V' ) )
-                else: # For '-', any beam, '.'
-                    q.append( ( newPoint, '>' ) )
-            elif currentDir == '<':
-                if grid[ newX ][ newY ] == '|':
-                    # Split the beam into two, 
-                    q.append( ( newPoint, 'V' ) )
-                    q.append( ( newPoint, '^' ) )
-                elif grid[ newX ][ newY ] == '/':
-                    # No change, keep moving forward
-                    q.append( ( newPoint, 'V' ) )
-                elif grid[ newX ][ newY ] == '\\':
-                    q.append( ( newPoint, '^' ) )
-                else: # For '-', any beam, '.'
-                    q.append( ( newPoint, '<' ) )
-            elif currentDir == 'V':
-                if grid[ newX ][ newY ] == '-':
-                    # Split the beam into two
-                    q.append( ( newPoint, '>' ) )
-                    q.append( ( newPoint, '<' ) )
-                elif grid[ newX ][ newY ] == '/':
-                    # No change, keep moving forward
-                    q.append( ( newPoint, '<' ) )
-                elif grid[ newX ][ newY ] == '\\':
-                    q.append( ( newPoint, '>' ) )
-                else: # For '|', AnyBeam, '.'
-                    q.append( ( newPoint, 'V' ) )
-            else:
-                if grid[ newX ][ newY ] == '-':
-                    # Split the beam into two
-                    q.append( ( newPoint, '>' ) )
-                    q.append( ( newPoint, '<' ) )
-                elif grid[ newX ][ newY ] == '/':
-                    # No change, keep moving forward
-                    q.append( ( newPoint, '>' ) )
-                elif grid[ newX ][ newY ] == '\\':
-                    q.append( ( newPoint, '<' ) )
-                else: # For '|', AnyBeam, '.'
-                    q.append( ( newPoint, '^' ) )
+            q = getNewDirection( q, newX, newY, currentDir )
     total = 0
     for g in newGrid:
         for cell in g:
@@ -198,54 +203,7 @@ def part2():
                 if ( newPoint, currentDir ) in visited:
                     continue
                 visited.add( ( newPoint, currentDir ) )
-                if currentDir == '>':
-                    if grid[ newX ][ newY ] == '|':
-                        # Split the beam into two, 
-                        q.append( ( newPoint, 'V' ) )
-                        q.append( ( newPoint, '^' ) )
-                    elif grid[ newX ][ newY ] == '/':
-                        # No change, keep moving forward
-                        q.append( ( newPoint, '^' ) )
-                    elif grid[ newX ][ newY ] == '\\':
-                        q.append( ( newPoint, 'V' ) )
-                    else: # For '-', any beam, '.'
-                        q.append( ( newPoint, '>' ) )
-                elif currentDir == '<':
-                    if grid[ newX ][ newY ] == '|':
-                        # Split the beam into two, 
-                        q.append( ( newPoint, 'V' ) )
-                        q.append( ( newPoint, '^' ) )
-                    elif grid[ newX ][ newY ] == '/':
-                        # No change, keep moving forward
-                        q.append( ( newPoint, 'V' ) )
-                    elif grid[ newX ][ newY ] == '\\':
-                        q.append( ( newPoint, '^' ) )
-                    else: # For '-', any beam, '.'
-                        q.append( ( newPoint, '<' ) )
-                elif currentDir == 'V':
-                    if grid[ newX ][ newY ] == '-':
-                        # Split the beam into two
-                        q.append( ( newPoint, '>' ) )
-                        q.append( ( newPoint, '<' ) )
-                    elif grid[ newX ][ newY ] == '/':
-                        # No change, keep moving forward
-                        q.append( ( newPoint, '<' ) )
-                    elif grid[ newX ][ newY ] == '\\':
-                        q.append( ( newPoint, '>' ) )
-                    else: # For '|', AnyBeam, '.'
-                        q.append( ( newPoint, 'V' ) )
-                else:
-                    if grid[ newX ][ newY ] == '-':
-                        # Split the beam into two
-                        q.append( ( newPoint, '>' ) )
-                        q.append( ( newPoint, '<' ) )
-                    elif grid[ newX ][ newY ] == '/':
-                        # No change, keep moving forward
-                        q.append( ( newPoint, '>' ) )
-                    elif grid[ newX ][ newY ] == '\\':
-                        q.append( ( newPoint, '<' ) )
-                    else: # For '|', AnyBeam, '.'
-                        q.append( ( newPoint, '^' ) )
+                q = getNewDirection( q, newX, newY, currentDir )
         total = 0
         for g in newGrid:
             for cell in g:
